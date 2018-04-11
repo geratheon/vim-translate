@@ -75,11 +75,11 @@ function! s:Translate(invert, word)
   call insert(translations, "Select one:", 0)
   let index = inputlist(translations)
   try
-    if index ==# "Select one:"
+    if !index
       throw 1
     endif
     " Put the translation below the cursor
-    exec ":put =\'" . dsts[index] . "\'"
+    exec ":put =\'" . dsts[index - 1] . "\'"
   catch
     echohl WarningMsg | echo "\nNothing inserted." | echohl None
   endtry
