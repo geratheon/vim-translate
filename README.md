@@ -4,7 +4,7 @@ Sometimes I just don't know the german word for an english one that's in my mind
 
 ## Features
 
-* `Tr[anslate][!] <word>`: Searches online for `<word>` and gives you a list to choose from. If `!` is given, it reverses the source and target language.
+* `:Tr[anslate][!] {word}`: Searches online for `{word}` and gives you a list to choose from. If `[!]` is given, it reverses the source and target language.
 
 For more detailled information, see `:help :Translate`.
 
