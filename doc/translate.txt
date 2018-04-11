@@ -42,4 +42,14 @@ has to be DE or EN.
 *g:translate_dst* [Default: "en"]
   Target language
 
+DEPENDENCIES                             *translate-dependencies*
+
+The only dependency is to have the classic command line tool {curl}
+installed on your machine and be present in your {$PATH} environment
+variable. Most systems should have that out of the box.
+
+The plugin itself won't do anything when {curl} is not present.
+
+cURL's Homepage: https://curl.haxx.se
+
  vim:tw=78:ts=8:ft=help:norl:
