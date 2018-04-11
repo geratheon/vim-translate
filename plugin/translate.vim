@@ -67,7 +67,7 @@ function! s:Translate(invert, word)
   let index = 0
   while index < len(srcs)
     " Build a readable translation string
-    call add(translations, (index + 1) . ":" . srcs[index] . " [" . dsts[index]. "]")
+    call add(translations, (index + 1) . ": " . srcs[index] . " [" . dsts[index]. "]")
     let index = index + 1
   endwhile
 
