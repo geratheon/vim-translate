@@ -1,0 +1,45 @@
+*translate.txt*  Translating stuff quickly.
+
+Author:  Jonas Kuball <jkuball@tzi.de>
+License: Same terms as Vim itself (see |license|)
+
+This plugin is only available if 'compatible' is not set.
+
+INTRODUCTION                             *translate*
+
+Sometimes I just don't know the german word for an english one that's
+in my mind right now, like "translation". In that case, I can just type
+:Tr translation to look it up directly in vim. The plugin then fetches
+a list of possible translations and lets me choose one to insert it
+directly.
+
+COMMANDS                                 *translate-commands*
+
+Right now, only one command is supplied.
+
+`:Tr[anslate][!] {word}`                   *:Translate*
+  Searches for translations of {word} for the language pair given by
+  |g:translate_src| and |g:translate_dst|. If the [!] is given, the
+  languages are switched.
+
+CONFIGURATION                            *translate-config* *translate-cfg*
+
+The default languages for are set to English and German, since I always
+now the english word but never the german one. If you want to set
+your own, you can edit them by overwriting the following variables.
+Please keep in mind, it needs to be present at dict.cc, since it's the
+dictionary of my choice.
+
+Currently supported languages are BG, BS, CS, DA, DE, EL, EN, EO, ES,
+FI, FR, HR, HU, IS, IT, LA, NL, NO, PL, PT, RO, RU, SK, SQ, SR, SV, TR.
+
+Since this is a mostly german dictionary website, one of the language pairs
+has to be DE or EN.
+
+*g:translate_src* [Default: "de"]
+  Source language
+
+*g:translate_dst* [Default: "en"]
+  Target language
+
+ vim:tw=78:ts=8:ft=help:norl:

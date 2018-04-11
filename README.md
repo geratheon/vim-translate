@@ -15,6 +15,8 @@ let g:translate_dst = "de"
 
 * `Tr[anslate][!] <word>`: Searches online for `<word>` and gives you a list to choose from. If `!` is given, it reverses the source and target language.
 
+For more detailled information, see `:help :Translate`.
+
 ## Dependencies
 
 The only dependency is to have [cURL](http://curl.haxx.se) installed and be located in your `$PATH`.
