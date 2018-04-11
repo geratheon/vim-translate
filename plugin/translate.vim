@@ -79,7 +79,8 @@ function! s:Translate(invert, word)
       throw 1
     endif
     " Put the translation below the cursor
-    exec ":put =\'" . dsts[index - 1] . "\'"
+    let @" = dsts[index - 1]
+    exec ":put"
   catch
     echohl WarningMsg | echo "\nNothing inserted." | echohl None
   endtry

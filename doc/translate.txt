@@ -20,7 +20,8 @@ Right now, only one command is supplied.
 `:Tr[anslate][!] {word}`                   *:Translate*
   Searches for translations of {word} for the language pair given by
   |g:translate_src| and |g:translate_dst|. If the [!] is given, the
-  languages are switched.
+  languages are switched. The translation is also stored in the unnamed
+  register (see |quotequote|).
 
 CONFIGURATION                            *translate-config* *translate-cfg*
 
