@@ -43,18 +43,18 @@ function! s:Translate(invert, word)
     return
   endif
 
-  let l:srcs = split(l:srcs, ",")
-  let l:dsts = split(l:dsts, ",")
+  let l:srcs = filter(split(l:srcs, ","), 'v:val !=# "\"\""')
+  let l:dsts = filter(split(l:dsts, ","), 'v:val !=# "\"\""')
 
   let l:translations = ""
   let l:index = 0
   while l:index < len(l:srcs)
-    let l:translations = l:translations . l:index . ": " . l:dsts[l:index][1:-2] . " [" . l:srcs[l:index][1:-2] . "]\n"
+    let l:translations = l:translations . (l:index + 1) . ": " . l:dsts[l:index][1:-2] . " [" . l:srcs[l:index][1:-2] . "]\n"
     let l:index = l:index + 1
   endwhile
 
   let l:index = input(l:translations . "----\nUse: ")
-  exec ":put =\'" . l:dsts[l:index][1:-2] . "\'"
+  exec ":put =\'" . l:dsts[l:index - 1][1:-2] . "\'"
 endfunction
 
 command! -nargs=1 -bang Translate :call s:Translate(<bang>0, <f-args>)
