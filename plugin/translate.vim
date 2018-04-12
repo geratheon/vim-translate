@@ -1,6 +1,6 @@
 " translate.vim - Quickly translate a word
 " Maintainer:   Jonas Kuball <jkuball@tzi.de>
-" Version:      0.2
+" Version:      0.3
 
 if exists("g:loaded_translate") || !executable("curl") || &cp
   finish
@@ -15,7 +15,15 @@ if !exists("g:translate_dst")
   let g:translate_dst = "de"
 endif
 
-function! s:Translate(word, invert)
+if !exists("g:translate_backend")
+  let g:translate_backend = "dict.cc"
+endif
+
+if !exists("g:translate_backends")
+  let g:translate_backends = {}
+endif
+
+function! s:BackendDictCC(word, invert)
   " Set srclang and dstlang as needed
   let srclang = a:invert ? g:translate_dst : g:translate_src
   let dstlang = a:invert ? g:translate_src : g:translate_dst
@@ -34,8 +42,7 @@ function! s:Translate(word, invert)
 
   " When no translation is given, return
   if !has_key(strtranslations, 1) || !has_key(strtranslations, 2)
-		echohl WarningMsg | echo "No translation found." | echohl None
-    return
+    return "No translation found."
   endif
 
   " As bad as this sounds, it seems like strtranslations[1] and
@@ -51,21 +58,41 @@ function! s:Translate(word, invert)
   " Now make pairs of translations by splitting the lists (and removing
   " the first element hardcoded). Also, remove the double quotes around
   " the words for better usage.
-  " TODO: Remove elements where both translations are an empty string
+  " TODO: Remove elements where both or one translation(s) are an empty string
   let srcs = map(split(dicttranslations[srclang], ",")[1:-1], 'v:val[1:-2]')
   let dsts = map(split(dicttranslations[dstlang], ",")[1:-1], 'v:val[1:-2]')
   if len(srcs) !=# len(dsts)
     " This is a classic 'this should never happen' type of thing.
-		echohl WarningMsg | echo "Bad things happening!" | echohl None
-    return
+    return "Bad things happening!"
   endif
+
   let translations = []
   let index = 0
   while index < len(srcs)
     " Build a readable translation string
-    call add(translations, (index + 1) . ": " . srcs[index] . " [" . dsts[index]. "]")
+    call add(translations, [srcs[index], dsts[index]])
     let index = index + 1
   endwhile
+  return translations
+endfunction
+let g:translate_backends["dict.cc"] = function("s:BackendDictCC")
+
+function! s:Translate(word, invert)
+  " Get the translation with the current backend
+  let result = g:translate_backends[g:translate_backend](a:word, a:invert)
+
+  " TODO: if translations is a string, stop here and send it out as a warning
+  if strlen(result) > 0
+    echohl WarningMsg | echo result | echohl None
+    return
+  endif
+
+  let translations = []
+  let index = 1
+  for [srcword, dstword] in result
+    call add(translations, index . ": " . srcword . " [" . dstword . "]")
+    let index = index + 1
+  endfor
 
   " Let the user decide which translation he wants to use
   call insert(translations, "Select one:", 0)
@@ -75,7 +102,7 @@ function! s:Translate(word, invert)
       throw 1
     endif
     " Put the translation below the cursor
-    let @" = dsts[index - 1]
+    let @" = result[index - 1][0]
     put
   catch
     echohl WarningMsg | echo "\nNothing inserted." | echohl None

@@ -10,12 +10,14 @@ For more detailled information, see `:help :Translate`.
 
 ## Configuration
 
-The default languages for this plugin are set to **English** and **German**, since I always now the english word but never the german one. If you want to set your own, you can set them in your `.vimrc`. Please keep in mind, it needs to be present at [dict.cc](https://dict.cc/), since it's the dictionary of my choice.
+The default languages for this plugin are set to **English** and **German**, since I always now the english word but never the german one. If you want to set your own, you can set them in your `.vimrc`.
 
 ```vimscript
 let g:translate_src = "en"
 let g:translate_dst = "de"
 ```
+
+The translation website of my choice is [dict.cc](https://www.dict.cc/). Theoretically spoken, this plugin can support every dictionary in the world, but right now, only one backend is implemented. You can, however, write your own. See `:help translate-backends`.
 
 ## Dependencies
 

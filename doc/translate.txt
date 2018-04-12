@@ -28,20 +28,64 @@ CONFIGURATION                            *translate-config* *translate-cfg*
 The default languages for are set to English and German, since I always
 now the english word but never the german one. If you want to set
 your own, you can edit them by overwriting the following variables.
-Please keep in mind, it needs to be present at dict.cc, since it's the
-dictionary of my choice.
 
-Currently supported languages are BG, BS, CS, DA, DE, EL, EN, EO, ES,
-FI, FR, HR, HU, IS, IT, LA, NL, NO, PL, PT, RO, RU, SK, SQ, SR, SV, TR.
+Please keep in mind, that the chosen backend (see |translate-backend|)
+has to support the languages.
 
-Since this is a mostly german dictionary website, one of the language pairs
-has to be DE or EN.
-
-*g:translate_src* [Default: "de"]
+*g:translate_src* [Default: `"de"`]
   Source language
 
-*g:translate_dst* [Default: "en"]
+*g:translate_dst* [Default: `"en"`]
   Target language
+
+*g:translate_backend* [Default: `"dict.cc"`]
+  Chosen backend, needs to be present in |g:translate_backends|.
+
+*g:translate_backends* [Default: `see below`]
+  A dictionary mapping strings to backend-functions. (see |translate-backends|)
+  By default, it contains all backends defined by this plugin. Usually, you
+  don't change the variable itself but insert a new key-value-backend pair.
+
+BACKENDS                                 *translate-backends*
+
+This plugin could hypothetically support every translation api existing, you
+just need a backend-function for it. It is possible to write your own backend,
+see |translate-custom-backends|.
+
+`dict.cc`
+  Backend for https://www.dict.cc/.
+
+  Currently supported languages are BG, BS, CS, DA, DE, EL, EN, EO, ES,
+  FI, FR, HR, HU, IS, IT, LA, NL, NO, PL, PT, RO, RU, SK, SQ, SR, SV, TR.
+
+  Since this is a mostly german dictionary website, one of the language pairs
+  has to be DE or EN.
+
+DEFINING CUSTOM BACKENDS                 *translate-custom-backends*
+
+You can define a custom backend for your own favorite dictionary website
+and/or API. A backend is a vimscript function, taking two arguments and
+returning a list of translation pairs. The first argument is the {word}
+from |:Translate|. The second argument is bool-ish and describes whether
+the [!] was used or not (ergo whether to switch |translate_src| and
+|translate_dst| or not).
+
+When you run into an error, just return a message as a string. It will
+be used to display a warning to the user.
+
+In case you need to fetch data from a website, feel free to use `curl`, since
+this plugin does not load when it's not present. (See |translate-dependencies|)
+>
+    function MyBackend(word, invert)
+        return [["src1", "dst1"], ["src2", "dst2"]]
+    endfunction
+    let g:translate_backends["cool_backend"] = function("MyBackend")
+<
+Don't forget to use your backend by setting it in the configuration.
+>
+    let g:translate_backend = "cool_backend"
+<
+Don't hesitate to make a pull request on GitHub if you've made a cool one.
 
 DEPENDENCIES                             *translate-dependencies*
 
@@ -52,5 +96,13 @@ variable. Most systems should have that out of the box.
 The plugin itself won't do anything when {curl} is not present.
 
 cURL's Homepage: https://curl.haxx.se
+
+SELF PROMOTION                           *translate-promotion*
+
+Follow me at GitHub!
+https://www.github.com/geratheon
+
+Give this plugin a star on GitHub!
+https://www.github.com/geratheon/vim-translate
 
  vim:tw=78:ts=8:ft=help:norl:
