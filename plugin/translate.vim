@@ -102,7 +102,7 @@ function! s:Translate(word, invert)
       throw 1
     endif
     " Put the translation below the cursor
-    let @" = result[index - 1][0]
+    let @" = result[index - 1][1]
     put
   catch
     echohl WarningMsg | echo "\nNothing inserted." | echohl None
