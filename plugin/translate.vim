@@ -15,14 +15,10 @@ if !exists("g:translate_dst")
   let g:translate_dst = "de"
 endif
 
-function! s:Translate(invert, word)
+function! s:Translate(word, invert)
   " Set srclang and dstlang as needed
-  let srclang = g:translate_src
-  let dstlang = g:translate_dst
-  if a:invert
-    let srclang = g:translate_dst
-    let dstlang = g:translate_src
-  endif
+  let srclang = a:invert ? g:translate_dst : g:translate_src
+  let dstlang = a:invert ? g:translate_src : g:translate_dst
 
   " Make a server request and extract the lines containing the translations
   " TODO: urlencode a:word for special cases like umlauts (see tpopes unimpaired.vim)
@@ -86,6 +82,6 @@ function! s:Translate(invert, word)
   endtry
 endfunction
 
-command! -nargs=1 -bang Translate :call s:Translate(<bang>0, <f-args>)
+command! -nargs=1 -bang Translate :call s:Translate(<f-args>, <bang>0)
 
 " vim:set et sw=2
