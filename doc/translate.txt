@@ -70,8 +70,8 @@ from |:Translate|. The second argument is bool-ish and describes whether
 the [!] was used or not (ergo whether to switch |translate_src| and
 |translate_dst| or not).
 
-When you run into an error, just return a message as a string. It will
-be used to display a warning to the user.
+When you run into an error, just |throw| a message as a string. It will be
+used to display a warning to the user and the translation process stops.
 
 In case you need to fetch data from a website, feel free to use `curl`, since
 this plugin does not load when it's not present. (See |translate-dependencies|)

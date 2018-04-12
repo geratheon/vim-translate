@@ -40,9 +40,9 @@ function! s:BackendDictCC(word, invert)
     endif
   endfor
 
-  " When no translation is given, return
+  " When no translation is given, stop
   if !has_key(strtranslations, 1) || !has_key(strtranslations, 2)
-    return "No translation found."
+    throw "No translation found."
   endif
 
   " As bad as this sounds, it seems like strtranslations[1] and
@@ -63,7 +63,7 @@ function! s:BackendDictCC(word, invert)
   let dsts = map(split(dicttranslations[dstlang], ",")[1:-1], 'v:val[1:-2]')
   if len(srcs) !=# len(dsts)
     " This is a classic 'this should never happen' type of thing.
-    return "Bad things happening!"
+    throw "Bad things happening!"
   endif
 
   let translations = []
@@ -79,13 +79,13 @@ let g:translate_backends["dict.cc"] = function("s:BackendDictCC")
 
 function! s:Translate(word, invert)
   " Get the translation with the current backend
-  let result = g:translate_backends[g:translate_backend](a:word, a:invert)
-
-  " TODO: if translations is a string, stop here and send it out as a warning
-  if strlen(result) > 0
-    echohl WarningMsg | echo result | echohl None
+  let result = ""
+  try
+    let result = g:translate_backends[g:translate_backend](a:word, a:invert)
+  catch
+    echohl WarningMsg | echo v:exception | echohl None
     return
-  endif
+  endtry
 
   let translations = []
   let index = 1
