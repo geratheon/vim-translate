@@ -38,6 +38,16 @@ has to support the languages.
 *g:translate_dst* [Default: `"en"`]
   Target language
 
+*g:translate_format* [Default: `"{index}: {dst} [{src}]"`]
+  Format string for the translations. Keywords in curly brackets will be
+  replaced automatically. Possible keywords are:
+    `index`: The index of the translation. Should be used, since this is the
+           number the user has to enter.
+      `src`: The translated words in the source language.
+           (See |g:translate_src|)
+      `dst`: The translated words in the destination language.
+           (See |g:translate_dst|)
+
 *g:translate_backend* [Default: `"dict.cc"`]
   Chosen backend, needs to be present in |g:translate_backends|.
 

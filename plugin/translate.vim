@@ -23,6 +23,10 @@ if !exists("g:translate_backends")
   let g:translate_backends = {}
 endif
 
+if !exists("g:translate_format")
+  let g:translate_format = '{index}: {dst} [{src}]'
+endif
+
 function! s:BackendDictCC(word, invert)
   " Set srclang and dstlang as needed
   let srclang = a:invert ? g:translate_dst : g:translate_src
@@ -90,7 +94,10 @@ function! s:Translate(word, invert)
   let translations = []
   let index = 1
   for [srcword, dstword] in result
-    call add(translations, index . ": " . srcword . " [" . dstword . "]")
+    call add(translations, substitute(substitute(substitute(g:translate_format,
+          \ '{index}', index, ""),
+          \ '{src}', srcword, ""),
+          \ '{dst}', dstword, ""))
     let index = index + 1
   endfor
 
