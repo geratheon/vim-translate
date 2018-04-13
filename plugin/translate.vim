@@ -7,25 +7,19 @@ if exists("g:loaded_translate") || !executable("curl") || &cp
 endif
 let g:loaded_translate = 1
 
-if !exists("g:translate_src")
-  let g:translate_src = "en"
-endif
+let g:translate_vars = [
+      \   [ "g:translate_src",      '"en"' ],
+      \   [ "g:translate_dst",      '"de"' ],
+      \   [ "g:translate_backend",  '"dict.cc"' ],
+      \   [ "g:translate_backends", '{}' ],
+      \   [ "g:translate_format",   '"{index}: {dst} [{src}]"' ]
+      \  ]
 
-if !exists("g:translate_dst")
-  let g:translate_dst = "de"
-endif
-
-if !exists("g:translate_backend")
-  let g:translate_backend = "dict.cc"
-endif
-
-if !exists("g:translate_backends")
-  let g:translate_backends = {}
-endif
-
-if !exists("g:translate_format")
-  let g:translate_format = '{index}: {dst} [{src}]'
-endif
+for [var, default] in g:translate_vars
+  if !exists(var)
+    exec 'let ' . var . ' = ' . default
+  endif
+endfor
 
 function! s:BackendDictCC(word, invert)
   " Set srclang and dstlang as needed
