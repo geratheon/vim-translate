@@ -88,7 +88,8 @@ this plugin does not load when it's not present. (See |translate-dependencies|)
     function MyBackend(word, invert)
         return [["src1", "dst1"], ["src2", "dst2"]]
     endfunction
-    let g:translate_backends["cool_backend"] = function("MyBackend")
+    if !exists("g:translate_backends") | let g:translate_backends = {} | endif
+    let g:translate_backends["cool_backend"] = "MyBackend"
 <
 Don't forget to use your backend by setting it in the configuration.
 >
