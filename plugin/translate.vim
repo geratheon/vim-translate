@@ -1,6 +1,6 @@
 " translate.vim - Quickly translate a word
 " Maintainer:   Jonas Kuball <jkuball@tzi.de>
-" Version:      0.4
+" Version:      0.5
 
 if exists("g:loaded_translate") || !executable("curl") || &cp
   finish
@@ -8,11 +8,14 @@ endif
 let g:loaded_translate = 1
 
 let g:translate_vars = [
-      \   [ "g:translate_src",      '"en"' ],
-      \   [ "g:translate_dst",      '"de"' ],
-      \   [ "g:translate_backend",  '"dict.cc"' ],
-      \   [ "g:translate_backends", '{}' ],
-      \   [ "g:translate_format",   '"{index}: {dst} [{src}]"' ]
+      \   [ "g:translate_src",       '"en"' ],
+      \   [ "g:translate_dst",       '"de"' ],
+      \   [ "g:translate_backend",   '"dict.cc"' ],
+      \   [ "g:translate_backends",  '{}' ],
+      \   [ "g:translate_format",    '"{index}: {dst} [{src}]"' ],
+      \   [ "g:translate_register",  "'\"'" ],
+      \   [ "g:translate_autopaste", '1' ],
+      \   [ "g:translate_autoyank",  '1' ]
       \  ]
 
 for [var, default] in g:translate_vars
@@ -50,8 +53,13 @@ function! s:Translate(word, invert)
     if !index
       throw 1
     endif
-    " Put the translation below the cursor
-    exec 'put =result[index -1][1]'
+    if g:translate_autoyank
+      exec 'let @' . g:translate_register . ' = result[index - 1][1]'
+    endif
+    if g:translate_autopaste
+      " Put the translation below the cursor
+      exec 'put =result[index - 1][1]'
+    endif
   catch
     echohl WarningMsg | echo "\nNothing inserted." | echohl None
   endtry

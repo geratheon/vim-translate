@@ -20,7 +20,13 @@ Right now, only one command is supplied.
 `:Tr[anslate][!] {word}`                   *:Translate*
   Searches for translations of {word} for the language pair given by
   |g:translate_src| and |g:translate_dst|. If the [!] is given, the languages
-  are switched. The found translation is inserted below the cursor.
+  are switched.
+
+  If |g:translate_autopaste| is set, the found translation is inserted
+  below the cursor.
+
+  If |g:translate_autoyank| is set, the found translation is yanked into the
+  register specified by |g:translate_register|.
 
 CONFIGURATION                            *translate-config* *translate-cfg*
 
@@ -54,6 +60,18 @@ has to support the languages.
   A dictionary mapping strings to backend-functions. (see |translate-backends|)
   By default, it contains all backends defined by this plugin. Usually, you
   don't change the variable itself but insert a new key-value-backend pair.
+
+*g:translate_autopaste* [Default: `1`]
+  If this evaluates to `true`, the selected translation is automatically pasted
+  in a new line below the cursor.
+
+*g:translate_autoyank* [Default: `1`]
+  If this evaluates to `true`, the selected translation is automatically
+  yanked as specified by |g:translate_register|.
+
+*g:translate_register* [Default: `'"'`]
+  The register to copy the translation to, in case |g:translate_autoyank|
+  evaluates to true.
 
 BACKENDS                                 *translate-backends*
 
